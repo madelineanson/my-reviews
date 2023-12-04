@@ -2,13 +2,19 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-# Create your views here.
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.schemas import DefaultSchema
+
+reviews = []
+
 class AppDevClubReviewsView(APIView):
+    def post(self, request):
+        user_review = request.get('user_review', '')
+        #review to the array
+        reviews.append(user_review)
+        print(user_review)
+        return JsonResponse({'status': 'success'})
+    
     def get(self, request):
-        reviews = [
-            'app dev is great',
-            'you should join',
-            'hello world',
-            'add more react workshops'
-        ]
-        return Response({'reviews': reviews})
+        return Response({'user_reviews': reviews})
